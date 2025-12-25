@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teach-in Archive</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --ink-soft: #4b4b4b;
+      --paper: #fbfbf9;
+      --paper-deep: #f2f2ee;
+      --accent: #1e74c6;
+      --accent-soft: #ffd54a;
+      --film: #111111;
+      --glow: rgba(30, 116, 198, 0.24);
+      --shadow: rgba(16, 16, 16, 0.14);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Yu Gothic UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ffffff 0%, var(--paper) 40%, var(--paper-deep) 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(600px 360px at 85% 12%, rgba(255, 213, 74, 0.28), transparent 58%),
+        radial-gradient(520px 320px at 8% 8%, rgba(30, 116, 198, 0.24), transparent 58%),
+        repeating-linear-gradient(0deg, rgba(17, 17, 17, 0.03) 0px, rgba(17, 17, 17, 0.03) 1px, transparent 2px, transparent 4px);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    header {
+      padding: 48px 4vw 20px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      gap: 32px;
+      align-items: end;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 3vw + 1.4rem, 4.6rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--film);
+      margin: 0 0 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.02em;
+    }
+
+    .hero-title span {
+      display: inline-block;
+    }
+
+    .title-black {
+      color: #111111;
+    }
+
+    .title-blue {
+      color: #0073C0;
+    }
+
+    .title-navy {
+      color: #295377;
+    }
+
+    .title-yellow {
+      color: #ffd54a;
+    }
+
+    .hero-subtitle {
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    nav {
+      padding: 0 4vw 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 111, 176, 0.25);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(47, 111, 176, 0.18);
+    }
+
+    main {
+      padding: 0 4vw 60px;
+      display: grid;
+      gap: 36px;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(27, 20, 18, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(47, 111, 176, 0.12);
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      margin: 0 0 6px;
+      color: var(--film);
+    }
+
+    .section-subtitle {
+      margin: 0 0 20px;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+    }
+
+    .pdf-grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    .pdf-entry {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .pdf-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: inset 0 0 0 2px rgba(47, 111, 176, 0.12);
+    }
+
+    .pdf-card object {
+      width: 100%;
+      height: min(70vh, 720px);
+      border-radius: 12px;
+      border: 1px solid rgba(17, 17, 17, 0.15);
+    }
+
+    .pdf-meta {
+      display: grid;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .pdf-meta h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      box-shadow: 0 12px 24px var(--glow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(47, 111, 176, 0.25);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      column-gap: 6px;
+      row-gap: 8px;
+    }
+
+    .gallery-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 14px 28px rgba(17, 17, 17, 0.1);
+      transform: translateY(8px);
+      opacity: 0;
+      animation: reveal 0.6s ease forwards;
+    }
+
+    .gallery-card img {
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      filter: saturate(1.05);
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.04);
+      filter: saturate(1.2);
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 24px var(--glow);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      z-index: 10;
+    }
+
+    .back-to-top.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      box-shadow: 0 16px 32px rgba(30, 116, 198, 0.32);
+    }
+
+
+    footer {
+      padding: 20px 4vw 40px;
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
+    }
+
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-entry {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding-top: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gallery-card {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .gallery-card img,
+      .nav-pill,
+      .button {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <div>
+        <h1 class="hero-title" aria-label="Teach-in Archive">
+          <span class="title-black">T</span>
+          <span class="title-blue">E</span>
+          <span class="title-yellow">A</span>
+          <span class="title-navy">C</span>
+          <span class="title-black">H</span>
+          <span class="title-blue">-</span>
+          <span class="title-yellow">I</span>
+          <span class="title-navy">N</span>
+        </h1>
+        <p class="hero-subtitle">
+          令和 7 年度沖縄文化芸術の創造発信支援事業「映画でひらく、語り場in東村」
+        </p>
+        <p class="hero-subtitle">
+          支援:沖縄県、公益財団法人沖縄県文化芸術振興会
+        </p>
+        <p class="hero-subtitle">
+          主催:SOUVENIR 宮城いつか
+        </p>
+        <p class="hero-subtitle">
+          共催:東村文化・スポーツ記念館
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <a class="nav-pill" href="#pdf">PDFプレビュー</a>
+    <a class="nav-pill" href="#gallery-FUNNIES">ファニーズ</a>
+    <a class="nav-pill" href="#gallery-CHIMUGURISA">ちむぐりさ</a>
+    <a class="nav-pill" href="#gallery-AINU-PURI">AINU PURI</a>
+  </nav>
+
+  <main>
+    <section id="pdf">
+      <h2 class="section-title">PDFプレビュー</h2>
+      <p class="section-subtitle">資料はその場で閲覧でき、必要に応じてダウンロードできます。</p>
+      <div class="pdf-grid" id="pdf-grid"></div>
+    </section>
+
+    <section id="gallery-FUNNIES">
+      <h2 class="section-title">ファニーズ&山城智二 TEACH-IN</h2>
+      <p class="section-subtitle">Screening 7.20 SUN</p>
+      <div class="gallery-grid" data-gallery="FUNNIES"></div>
+    </section>
+
+    <section id="gallery-CHIMUGURISA">
+      <h2 class="section-title">ちむぐりさ&平良いずみ TEACH-IN</h2>
+      <p class="section-subtitle">Screening 9.20 SAT</p>
+      <div class="gallery-grid" data-gallery="CHIMUGURISA"></div>
+    </section>
+
+    <section id="gallery-AINU-PURI">
+      <h2 class="section-title">AINU PURI&福永壮志 TEACH-IN</h2>
+      <p class="section-subtitle">Screening 11.15 SAT</p>
+      <div class="gallery-grid" data-gallery="AINU PURI"></div>
+    </section>
+  </main>
+
+  <button class="back-to-top" type="button" aria-label="トップに戻る">↑</button>
+
+  <footer>
+    このページはGitHub Pages向けの静的アーカイブです。PDFと画像のパスを変更する場合は、
+    <code>index.html</code>の配列を更新してください。
+  </footer>
+
+  <script>
+    const pdfs = [
+      {
+        title: "映画上映会",
+        path: "pdf/映画上映会.pdf",
+        description: "上映会の概要と資料。",
+      },
+    ];
+
+    const galleries = [
+      {
+        title: "CHIMUGURISA",
+        folder: "CHIMUGURISA",
+        files: [
+          "image/CHIMUGURISA/DSCF9657.webp",
+          "image/CHIMUGURISA/DSCF9658.webp",
+          "image/CHIMUGURISA/DSCF9659.webp",
+          "image/CHIMUGURISA/DSCF9661.webp",
+          "image/CHIMUGURISA/DSCF9662.webp",
+          "image/CHIMUGURISA/DSCF9665.webp",
+          "image/CHIMUGURISA/DSCF9666.webp",
+          "image/CHIMUGURISA/DSCF9667.webp",
+          "image/CHIMUGURISA/DSCF9668.webp",
+          "image/CHIMUGURISA/DSCF9669.webp",
+          "image/CHIMUGURISA/DSCF9670.webp",
+          "image/CHIMUGURISA/DSCF9674.webp",
+          "image/CHIMUGURISA/DSCF9675.webp",
+          "image/CHIMUGURISA/DSCF9678.webp",
+          "image/CHIMUGURISA/DSCF9679.webp",
+          "image/CHIMUGURISA/DSCF9680.webp",
+          "image/CHIMUGURISA/DSCF9681.webp",
+          "image/CHIMUGURISA/DSCF9683.webp",
+          "image/CHIMUGURISA/DSCF9686.webp",
+          "image/CHIMUGURISA/DSCF9687.webp",
+          "image/CHIMUGURISA/DSCF9688.webp",
+          "image/CHIMUGURISA/DSCF9689.webp",
+          "image/CHIMUGURISA/DSCF9690.webp",
+          "image/CHIMUGURISA/DSCF9691.webp",
+          "image/CHIMUGURISA/DSCF9692.webp",
+          "image/CHIMUGURISA/DSCF9693.webp",
+          "image/CHIMUGURISA/DSCF9694.webp",
+          "image/CHIMUGURISA/DSCF9695.webp",
+          "image/CHIMUGURISA/DSCF9696.webp",
+          "image/CHIMUGURISA/DSCF9697.webp",
+          "image/CHIMUGURISA/DSCF9698.webp",
+          "image/CHIMUGURISA/DSCF9699.webp",
+          "image/CHIMUGURISA/DSCF9700.webp",
+          "image/CHIMUGURISA/DSCF9701.webp",
+          "image/CHIMUGURISA/DSCF9702.webp",
+          "image/CHIMUGURISA/DSCF9703.webp",
+          "image/CHIMUGURISA/DSCF9704.webp",
+          "image/CHIMUGURISA/DSCF9705.webp",
+          "image/CHIMUGURISA/DSCF9706.webp",
+          "image/CHIMUGURISA/DSCF9707.webp",
+          "image/CHIMUGURISA/DSCF9708.webp",
+          "image/CHIMUGURISA/DSCF9709.webp",
+          "image/CHIMUGURISA/DSCF9710.webp",
+          "image/CHIMUGURISA/DSCF9712.webp",
+          "image/CHIMUGURISA/DSCF9713.webp",
+          "image/CHIMUGURISA/DSCF9714.webp",
+          "image/CHIMUGURISA/DSCF9715.webp",
+          "image/CHIMUGURISA/DSCF9716.webp",
+          "image/CHIMUGURISA/DSCF9717.webp",
+          "image/CHIMUGURISA/DSCF9718.webp",
+          "image/CHIMUGURISA/DSCF9719.webp",
+          "image/CHIMUGURISA/DSCF9720.webp",
+          "image/CHIMUGURISA/DSCF9721.webp",
+          "image/CHIMUGURISA/DSCF9722.webp",
+          "image/CHIMUGURISA/DSCF9723.webp",
+          "image/CHIMUGURISA/DSCF9724.webp",
+          "image/CHIMUGURISA/DSCF9725.webp",
+          "image/CHIMUGURISA/DSCF9726.webp",
+          "image/CHIMUGURISA/DSCF9727.webp",
+          "image/CHIMUGURISA/DSCF9728.webp",
+          "image/CHIMUGURISA/DSCF9729.webp",
+          "image/CHIMUGURISA/DSCF9730.webp",
+          "image/CHIMUGURISA/DSCF9731.webp",
+          "image/CHIMUGURISA/DSCF9732.webp",
+          "image/CHIMUGURISA/DSCF9733.webp",
+          "image/CHIMUGURISA/DSCF9734.webp",
+          "image/CHIMUGURISA/DSCF9735.webp",
+          "image/CHIMUGURISA/DSCF9736.webp",
+          "image/CHIMUGURISA/DSCF9738.webp",
+          "image/CHIMUGURISA/DSCF9739.webp",
+          "image/CHIMUGURISA/DSCF9740.webp",
+          "image/CHIMUGURISA/DSCF9741.webp",
+          "image/CHIMUGURISA/DSCF9742.webp",
+          "image/CHIMUGURISA/DSCF9743.webp",
+          "image/CHIMUGURISA/DSCF9744.webp",
+          "image/CHIMUGURISA/DSCF9745.webp",
+          "image/CHIMUGURISA/DSCF9746.webp",
+          "image/CHIMUGURISA/DSCF9747.webp",
+          "image/CHIMUGURISA/DSCF9748.webp",
+          "image/CHIMUGURISA/DSCF9749.webp",
+          "image/CHIMUGURISA/DSCF9750.webp",
+          "image/CHIMUGURISA/DSCF9751.webp",
+          "image/CHIMUGURISA/DSCF9752.webp",
+          "image/CHIMUGURISA/DSCF9753.webp",
+          "image/CHIMUGURISA/DSCF9754.webp",
+          "image/CHIMUGURISA/DSCF9755.webp",
+          "image/CHIMUGURISA/DSCF9756.webp",
+          "image/CHIMUGURISA/DSCF9757.webp",
+          "image/CHIMUGURISA/DSCF9758.webp",
+          "image/CHIMUGURISA/DSCF9759.webp",
+          "image/CHIMUGURISA/DSCF9760.webp",
+          "image/CHIMUGURISA/DSCF9761.webp",
+          "image/CHIMUGURISA/DSCF9762.webp",
+          "image/CHIMUGURISA/DSCF9763.webp",
+          "image/CHIMUGURISA/DSCF9764.webp",
+          "image/CHIMUGURISA/DSCF9765.webp",
+          "image/CHIMUGURISA/DSCF9766.webp",
+          "image/CHIMUGURISA/DSCF9767.webp",
+          "image/CHIMUGURISA/DSCF9768.webp",
+          "image/CHIMUGURISA/DSCF9769.webp",
+          "image/CHIMUGURISA/DSCF9770.webp",
+          "image/CHIMUGURISA/DSCF9771.webp",
+          "image/CHIMUGURISA/DSCF9772.webp",
+          "image/CHIMUGURISA/DSCF9773.webp",
+          "image/CHIMUGURISA/DSCF9774.webp",
+          "image/CHIMUGURISA/DSCF9775.webp",
+          "image/CHIMUGURISA/DSCF9776.webp",
+          "image/CHIMUGURISA/DSCF9777.webp",
+          "image/CHIMUGURISA/DSCF9778.webp",
+          "image/CHIMUGURISA/DSCF9779.webp",
+          "image/CHIMUGURISA/DSCF9780.webp",
+          "image/CHIMUGURISA/DSCF9781.webp",
+          "image/CHIMUGURISA/DSCF9782.webp",
+          "image/CHIMUGURISA/DSCF9783.webp",
+          "image/CHIMUGURISA/DSCF9784.webp",
+          "image/CHIMUGURISA/DSCF9785.webp",
+          "image/CHIMUGURISA/DSCF9786.webp",
+          "image/CHIMUGURISA/DSCF9787.webp",
+          "image/CHIMUGURISA/DSCF9788.webp",
+          "image/CHIMUGURISA/DSCF9789.webp",
+          "image/CHIMUGURISA/DSCF9790.webp",
+          "image/CHIMUGURISA/DSCF9791.webp",
+          "image/CHIMUGURISA/DSCF9792.webp",
+          "image/CHIMUGURISA/DSCF9793.webp",
+          "image/CHIMUGURISA/DSCF9795.webp",
+          "image/CHIMUGURISA/DSCF9796.webp",
+          "image/CHIMUGURISA/DSCF9797.webp",
+          "image/CHIMUGURISA/DSCF9798.webp",
+          "image/CHIMUGURISA/DSCF9799.webp",
+          "image/CHIMUGURISA/DSCF9800.webp",
+          "image/CHIMUGURISA/DSCF9801.webp",
+          "image/CHIMUGURISA/DSCF9802.webp",
+          "image/CHIMUGURISA/DSCF9803.webp",
+          "image/CHIMUGURISA/DSCF9804.webp",
+          "image/CHIMUGURISA/DSCF9805.webp",
+          "image/CHIMUGURISA/DSCF9806.webp",
+          "image/CHIMUGURISA/DSCF9807.webp",
+          "image/CHIMUGURISA/DSCF9808.webp",
+          "image/CHIMUGURISA/DSCF9809.webp",
+          "image/CHIMUGURISA/DSCF9810.webp",
+          "image/CHIMUGURISA/DSCF9811.webp",
+          "image/CHIMUGURISA/DSCF9812.webp",
+          "image/CHIMUGURISA/DSCF9813.webp",
+          "image/CHIMUGURISA/DSCF9814.webp",
+          "image/CHIMUGURISA/DSCF9815.webp",
+          "image/CHIMUGURISA/DSCF9816.webp",
+          "image/CHIMUGURISA/DSCF9817.webp",
+          "image/CHIMUGURISA/DSCF9818.webp",
+          "image/CHIMUGURISA/DSCF9819.webp",
+          "image/CHIMUGURISA/DSCF9820.webp",
+          "image/CHIMUGURISA/DSCF9821.webp",
+          "image/CHIMUGURISA/DSCF9822.webp",
+          "image/CHIMUGURISA/DSCF9823.webp",
+        ],
+      },
+      {
+        title: "FUNNIES",
+        folder: "FUNNIES",
+        files: [
+          "image/FUNNIES/P1940508.webp",
+          "image/FUNNIES/P1940545.webp",
+          "image/FUNNIES/P1940594.webp",
+          "image/FUNNIES/P1940627.webp",
+          "image/FUNNIES/P1940670.webp",
+          "image/FUNNIES/P1940671.webp",
+          "image/FUNNIES/P1940891.webp",
+          "image/FUNNIES/P1940892.webp",
+          "image/FUNNIES/P1940894.webp",
+          "image/FUNNIES/P1940902.webp",
+          "image/FUNNIES/P1940931.webp",
+          "image/FUNNIES/P1940956.webp",
+          "image/FUNNIES/P1940963.webp",
+          "image/FUNNIES/P1940974.webp",
+          "image/FUNNIES/P1950454.webp",
+          "image/FUNNIES/P1940734.webp",
+          "image/FUNNIES/P1940980.webp",
+          "image/FUNNIES/P1950079.webp",
+          "image/FUNNIES/P1950108.webp",
+          "image/FUNNIES/P1950131.webp",
+          "image/FUNNIES/P1950306.webp",
+          "image/FUNNIES/P1950351.webp",
+          "image/FUNNIES/P1950417.webp",
+          "image/FUNNIES/P1950425.webp",
+          "image/FUNNIES/P1950427.webp",
+          "image/FUNNIES/P1950435.webp",
+          "image/FUNNIES/P1950493.webp",
+          "image/FUNNIES/P1940548.webp",
+          "image/FUNNIES/P1940835.webp",
+          "image/FUNNIES/P1940914.webp",
+          "image/FUNNIES/P1940919.webp",
+          "image/FUNNIES/P1940933.webp",
+          "image/FUNNIES/P1950009.webp",
+          "image/FUNNIES/P1950010.webp",
+          "image/FUNNIES/P1950014.webp",
+          "image/FUNNIES/P1950081.webp",
+          "image/FUNNIES/P1950086.webp",
+          "image/FUNNIES/P1950090.webp",
+          "image/FUNNIES/P1950110.webp",
+          "image/FUNNIES/P1950187.webp",
+          "image/FUNNIES/P1950202.webp",
+          "image/FUNNIES/P1950354.webp",
+          "image/FUNNIES/P1950414.webp",
+          "image/FUNNIES/P1950448.webp",
+          "image/FUNNIES/P1950476.webp",
+          "image/FUNNIES/P1950488.webp",
+          "image/FUNNIES/P1950500.webp",
+          "image/FUNNIES/P1950514.webp",
+          "image/FUNNIES/P1940741.webp",
+          "image/FUNNIES/P1940948.webp",
+          "image/FUNNIES/P1950094.webp",
+          "image/FUNNIES/P1950095.webp",
+          "image/FUNNIES/P1950172.webp",
+          "image/FUNNIES/P1950221.webp",
+          "image/FUNNIES/P1950352.webp",
+          "image/FUNNIES/P1950398.webp",
+          "image/FUNNIES/P1950407.webp",
+          "image/FUNNIES/P1950408.webp",
+          "image/FUNNIES/P1950411.webp",
+          "image/FUNNIES/P1950429.webp",
+          "image/FUNNIES/P1950430.webp",
+          "image/FUNNIES/P1950460.webp",
+          "image/FUNNIES/P1950490.webp",
+          "image/FUNNIES/P1950491.webp",
+          "image/FUNNIES/P1950492.webp",
+          "image/FUNNIES/P1950494.webp",
+          "image/FUNNIES/P1950502.webp",
+          "image/FUNNIES/P1950505.webp",
+          "image/FUNNIES/P1950527.webp",
+          "image/FUNNIES/P1950543.webp",
+          "image/FUNNIES/P1940547.webp",
+          "image/FUNNIES/P1940707.webp",
+          "image/FUNNIES/P1940742.webp",
+          "image/FUNNIES/P1940867.webp",
+          "image/FUNNIES/P1940934.webp",
+          "image/FUNNIES/P1940935.webp",
+          "image/FUNNIES/P1950113.webp",
+          "image/FUNNIES/P1950133.webp",
+          "image/FUNNIES/P1950161.webp",
+          "image/FUNNIES/P1950162.webp",
+          "image/FUNNIES/P1950183.webp",
+          "image/FUNNIES/P1950253.webp",
+          "image/FUNNIES/P1950254.webp",
+          "image/FUNNIES/P1950256.webp",
+          "image/FUNNIES/P1950258.webp",
+          "image/FUNNIES/P1950348.webp",
+          "image/FUNNIES/P1950415.webp",
+          "image/FUNNIES/P1950447.webp",
+          "image/FUNNIES/P1950450.webp",
+          "image/FUNNIES/P1950458.webp",
+          "image/FUNNIES/P1950496.webp",
+          "image/FUNNIES/P1950507.webp",
+          "image/FUNNIES/P1940851.webp",
+          "image/FUNNIES/P1950087.webp",
+          "image/FUNNIES/P1950138.webp",
+          "image/FUNNIES/P1950316.webp",
+          "image/FUNNIES/P1950327.webp",
+          "image/FUNNIES/P1950402.webp",
+          "image/FUNNIES/P1950416.webp",
+          "image/FUNNIES/P1950432.webp",
+          "image/FUNNIES/P1950477.webp",
+          "image/FUNNIES/P1950485.webp",
+        ],
+      },
+      {
+        title: "AINU PURI",
+        folder: "AINU PURI",
+        files: [
+          "image/AINU PURI/2E93C469-92AF-4779-BE27-394E0E1DD7EA.webp",
+          "image/AINU PURI/9BE279B1-A93C-47B7-98EF-0C5E17B3D59F.webp",
+          "image/AINU PURI/FA37FC06-4B54-46EC-B4EA-1EAB948D8DAF.webp",
+          "image/AINU PURI/21145112-42BF-4C60-81E4-44B33D8EFEF8.webp",
+          "image/AINU PURI/2648EB01-7CA1-4900-B251-DC2E78586053.webp",
+          "image/AINU PURI/2E2C1F78-9053-4ACD-8045-5EE1529E3BC1.webp",
+          "image/AINU PURI/379D8ED0-88DF-427C-9B20-849864A894E5.webp",
+          "image/AINU PURI/38B2B186-F725-4471-8DD5-E5AD2DB01319.webp",
+          "image/AINU PURI/3B89B881-7F3B-4A9D-8BF1-55B96448EBF4.webp",
+          "image/AINU PURI/44A22C79-DBD9-4273-A33E-42801EF22994.webp",
+          "image/AINU PURI/60029969-EDC1-4C14-B755-00BADE995317.webp",
+          "image/AINU PURI/AABD0F49-8C49-4DC9-8EDD-337D77921939.webp",
+          "image/AINU PURI/BEBC7C2D-D379-4ECC-B500-631FFCFB9FBC.webp",
+          "image/AINU PURI/BFA851E3-E176-4D84-8716-B43ED703353F.webp",
+          "image/AINU PURI/C6BEBB00-5371-4DA4-A75E-205336245A60.webp",
+          "image/AINU PURI/D3836072-25F1-4B5C-807B-A3C028EA8C10.webp",
+          "image/AINU PURI/E04E3C67-0D2F-42AC-9B75-298E1D7F0BAF.webp",
+          "image/AINU PURI/E8FD3367-7424-495A-ABE2-45D40E445E4F.webp",
+          "image/AINU PURI/0CDD6AD4-90C7-4912-9540-2035D263952E.webp",
+          "image/AINU PURI/0DE18BBF-758F-4C63-8F64-A822E818023D.webp",
+          "image/AINU PURI/2C19DFFA-6A44-4D61-BCF4-1942179ABCF1.webp",
+          "image/AINU PURI/2C44436E-7911-4D43-BB61-82DA1F09FBE4.webp",
+          "image/AINU PURI/3EAEE4AC-A93B-4075-B1EE-AB709FEF2BD4.webp",
+          "image/AINU PURI/88166704-FFCB-4811-A53A-2B94F0062969.webp",
+          "image/AINU PURI/883EDBF8-7A21-4A5A-B706-00B0E19543DC.webp",
+          "image/AINU PURI/B2D29F7E-5D5D-4424-AAD7-E6EE09B42A31.webp",
+          "image/AINU PURI/B866929C-5ED9-4A58-A82A-53A714029B34.webp",
+          "image/AINU PURI/C17C4FCB-09AB-4737-BA2D-1DD3E45DC1DB.webp",
+          "image/AINU PURI/E1C786FB-A932-4BF2-9462-1FFCB28DCDA5.webp",
+          "image/AINU PURI/EA6A111A-F8DD-43C7-8CBA-6B50DDF43517.webp",
+          "image/AINU PURI/F020D8D6-58C0-480E-8483-99A1B323FD5F.webp",
+          "image/AINU PURI/F7E02B0D-DA01-446E-8FB9-BF60890DCD34.webp",
+          "image/AINU PURI/16F35AA1-6D4F-49A1-B6DC-A4879D0A5C0E.webp",
+          "image/AINU PURI/1C405EAE-DF2C-4F3E-BBCD-2F3F19420C51.webp",
+          "image/AINU PURI/22B07A9E-FFEE-4789-B64B-3CD6C052D5F6.webp",
+          "image/AINU PURI/5B75D5AD-438B-4C7B-BBC7-036465B72292.webp",
+          "image/AINU PURI/64497469-EF75-4B19-AB79-6580A15EE7BC.webp",
+          "image/AINU PURI/649CDFA5-3DD9-44EA-9568-6EAEF52A8DBC.webp",
+          "image/AINU PURI/88237E1F-DD6E-4780-8E1D-56A7197F641C.webp",
+          "image/AINU PURI/92210589-7966-47DA-9FDB-E53C0FB764E4.webp",
+          "image/AINU PURI/93B5DFB3-58F8-4BD2-8D3B-9FA72FBE99E5.webp",
+          "image/AINU PURI/9C1F6CAB-5522-42AD-978E-3C574DB21DBD.webp",
+          "image/AINU PURI/A6C472EC-B590-4EFD-91CF-0C63EEDDC88D.webp",
+          "image/AINU PURI/BF567619-AD60-4E74-BAFB-C4BD86F8B72A.webp",
+          "image/AINU PURI/D468D9CA-379F-42AE-B41A-E8C0D550D2FB.webp",
+          "image/AINU PURI/F7707CD9-A1AA-4BEA-9746-284002D9D8A2.webp",
+          "image/AINU PURI/F8FEA99F-2A24-4D21-A70D-7EB1FF7526E6.webp",
+          "image/AINU PURI/FF4FCD21-29BD-46F9-B3DC-561F95C0761C.webp",
+          "image/AINU PURI/0A6AEF39-D7FE-4BBD-9BE2-8CEE69A68B63.webp",
+          "image/AINU PURI/1894818E-5977-4C8B-916F-F2E39BBD68B0.webp",
+          "image/AINU PURI/2C57871B-1183-43FF-AD9C-CC697B336708.webp",
+          "image/AINU PURI/32D97AB7-696F-4A73-96DB-1B358D989982.webp",
+          "image/AINU PURI/343E3C58-7747-4F5D-8CF9-8E0E97CE9A27.webp",
+          "image/AINU PURI/4A2BC9B4-C748-4F2E-AEA6-5B7FB33E3DB6.webp",
+          "image/AINU PURI/50F39298-B7BE-4373-BB12-68759EA21BBA.webp",
+          "image/AINU PURI/50FBEFB8-E05B-45C2-B30F-6F694D3EC446.webp",
+          "image/AINU PURI/5C040E36-F192-4BE3-AF7A-19CFEBAB0C04.webp",
+          "image/AINU PURI/5CBFCFBB-71A1-47DC-906D-84CF7B01CC51.webp",
+          "image/AINU PURI/5F06913E-3D01-4488-B01C-1C575265E9CA.webp",
+          "image/AINU PURI/64218872-6E84-4EBA-9C2E-6A2E97F3E124.webp",
+          "image/AINU PURI/80AB27A9-6DA4-4818-B203-F24E28E26074.webp",
+          "image/AINU PURI/C5F53D8A-66D4-4983-8824-9607B9BB17AA.webp",
+          "image/AINU PURI/E052BDBF-22FF-44B1-9B3D-829B46199A9E.webp",
+          "image/AINU PURI/E5B446FC-FF05-4681-94D2-1CC29C0F0550.webp",
+          "image/AINU PURI/F3CA03C2-8897-4F9F-A24E-FFB56766906D.webp",
+          "image/AINU PURI/0B5EC5FC-DA2F-41A2-8734-F72D4E020579.webp",
+          "image/AINU PURI/21C2DFAA-E70D-4EDE-BE25-D6C7E2E479BF.webp",
+          "image/AINU PURI/3131E053-2A07-4DD1-A13C-5E9862F71EE3.webp",
+          "image/AINU PURI/43F8E488-B1B1-4AF8-8115-59E109BF7B66.webp",
+          "image/AINU PURI/4726D7EF-C67F-4A19-8E5C-B82C95F0DC17.webp",
+          "image/AINU PURI/5091FA23-15A7-4570-BA6A-338F31A60CD8.webp",
+          "image/AINU PURI/52C7271B-94A5-4E03-A8A7-641075C0EA76.webp",
+          "image/AINU PURI/8ED5A9F1-6345-47AD-83FA-FE63C6A87C81.webp",
+          "image/AINU PURI/990F70A8-D5C6-49E7-BD57-A35A8396E544.webp",
+          "image/AINU PURI/CFCAF189-2A6B-49E3-AEA9-4214F766F220.webp",
+          "image/AINU PURI/D0E60198-6CA2-4DF5-8BF6-60F9C588CBAD.webp",
+          "image/AINU PURI/D37B6C41-328C-470E-8652-1A20976348EF.webp",
+          "image/AINU PURI/E373A6BA-0ABB-4FA6-98FF-D868EC8FB907.webp",
+          "image/AINU PURI/FC0E852C-8359-4248-83CC-AA0B8C954F71.webp",
+          "image/AINU PURI/1556702E-1BBA-4720-BE3E-33B54D7EEDE5.webp",
+          "image/AINU PURI/3464821D-1F06-4878-876A-896E8EDBDFBC.webp",
+          "image/AINU PURI/39879CB3-6BCD-42D9-8ADB-644AFE96896B.webp",
+          "image/AINU PURI/4F721DB8-677D-4F6B-AA77-CDF2319F90AA.webp",
+          "image/AINU PURI/50401AA5-9795-4481-B8DE-1CA2773D2231.webp",
+          "image/AINU PURI/70F18742-7D12-4C3B-BE87-0DEDDF45987C.webp",
+          "image/AINU PURI/8812A83D-E2F0-4B6B-BF78-AA1BD1F7320E.webp",
+          "image/AINU PURI/A9AD8F29-6615-4651-8EE0-DCA66EED2903.webp",
+          "image/AINU PURI/E3EFF635-0741-4741-B4EF-0EA4F0BEC0BC.webp",
+          "image/AINU PURI/EE574423-3456-4C0E-BF4D-3E5D280F6AFB.webp",
+          "image/AINU PURI/EEFA70C6-55BA-4084-9B6F-388CD333777A.webp",
+          "image/AINU PURI/0B2B43E6-AF8F-4828-AAB5-5A6AD218E2A2.webp",
+          "image/AINU PURI/47837563-A5CF-462E-A2E5-CBDC19EB462D.webp",
+        ],
+      },
+    ];
+
+    const pdfGrid = document.getElementById("pdf-grid");
+    pdfs.forEach((pdf) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "pdf-entry";
+
+      const preview = document.createElement("div");
+      preview.className = "pdf-card";
+      preview.innerHTML = `
+        <object data="${pdf.path}" type="application/pdf">
+          <p>PDFのプレビューに対応していない場合は、下のボタンからダウンロードしてください。</p>
+        </object>
+      `;
+
+      const meta = document.createElement("div");
+      meta.className = "pdf-meta";
+      meta.innerHTML = `
+        <h3>${pdf.title}</h3>
+        <p>${pdf.description}</p>
+        <a class="button" href="${pdf.path}" target="_blank" rel="noopener">PDFを開く</a>
+      `;
+
+      wrapper.appendChild(preview);
+      wrapper.appendChild(meta);
+      pdfGrid.appendChild(wrapper);
+    });
+
+    galleries.forEach((gallery) => {
+      const container = document.querySelector(`[data-gallery="${gallery.folder}"]`);
+      if (!container) return;
+
+      gallery.files.forEach((file, index) => {
+        const figure = document.createElement("figure");
+        figure.className = "gallery-card";
+        figure.style.animationDelay = `${Math.min(index, 20) * 40}ms`;
+
+        figure.innerHTML = `
+          <a href="${file}" target="_blank" rel="noopener">
+            <img src="${file}" alt="${gallery.title} ${index + 1}" loading="lazy" decoding="async" />
+          </a>
+        `;
+
+        container.appendChild(figure);
+      });
+    });
+
+    const backToTop = document.querySelector(".back-to-top");
+    const toggleBackToTop = () => {
+      if (!backToTop) return;
+      backToTop.classList.toggle("is-visible", window.scrollY > 400);
+    };
+
+    if (backToTop) {
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      window.addEventListener("scroll", toggleBackToTop, { passive: true });
+      toggleBackToTop();
+    }
+  </script>
+</body>
+</html>
