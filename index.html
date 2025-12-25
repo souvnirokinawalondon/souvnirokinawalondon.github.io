@@ -309,6 +309,29 @@
       }
     }
 
+    @media (max-width: 720px) {
+      .gallery-grid {
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(220px, 78vw);
+        column-gap: 10px;
+        row-gap: 0;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 6px;
+      }
+
+      .gallery-card {
+        scroll-snap-align: start;
+      }
+
+      .hero-subtitle {
+        font-size: 0.78rem;
+        line-height: 1.5;
+        white-space: nowrap;
+        overflow-x: auto;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .gallery-card {
         animation: none;
@@ -388,11 +411,6 @@
   </main>
 
   <button class="back-to-top" type="button" aria-label="トップに戻る">↑</button>
-
-  <footer>
-    このページはGitHub Pages向けの静的アーカイブです。PDFと画像のパスを変更する場合は、
-    <code>index.html</code>の配列を更新してください。
-  </footer>
 
   <script>
     const pdfs = [
